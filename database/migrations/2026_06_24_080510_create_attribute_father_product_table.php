@@ -15,8 +15,6 @@ return new class extends Migration
             $table->foreignId('attribute_id')->constrained('attributes'); 
             $table->foreignId('father_product_id')->constrained('father_products'); 
             $table->string('value'); 
-            
-            // Define the composite primary key
             $table->primary(['attribute_id', 'father_product_id']);
         });
     }
