@@ -9,24 +9,24 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+public function up(): void
     {
-        Schema::create('details', function (Blueprint $table) {
+        Schema::create('child_product_order', function (Blueprint $table) {
             $table->foreignId('order_id')->constrained('orders'); 
             $table->foreignId('child_product_id')->constrained('child_products'); 
             $table->integer('discount'); 
             $table->integer('quantity'); 
-            $table->decimal('sale_unit_price', 9, 4);
+            $table->decimal('sale_unit_price', 9, 4); 
+            
             $table->primary(['order_id', 'child_product_id']);
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('details');
+        Schema::dropIfExists('child_product_order');
     }
 };
