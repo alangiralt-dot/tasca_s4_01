@@ -22,8 +22,7 @@ return new class extends Migration
             $table->string('door');
             $table->foreignId('city_id')->constrained('cities');
             $table->string('postal_code');
-            $table->string('user_name');
-            $table->string('password');
+            $table->foreignId('user_id')->unique()->constrained('users');
         });
     }
 
