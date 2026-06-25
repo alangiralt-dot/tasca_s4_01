@@ -117,7 +117,7 @@ class BotDataSeeder extends Seeder
                     $currentUnitPrice = 0.0;
                     $units = '€ / u'; 
 
-                    $preuBrut = trim(str_replace("\xa0", ' ', $fill['preu'])); // "\xa0" és &nbsp;
+                    $preuBrut = trim(str_replace("\xC2\xA0", ' ', $fill['preu'])); // "\xC2\xA0" és &nbsp;
 
                     if (preg_match('/([0-9]+,[0-9]+)(.+)/', $preuBrut, $matches)) {
                         $currentUnitPrice = (float) str_replace(',', '.', $matches[1]);
