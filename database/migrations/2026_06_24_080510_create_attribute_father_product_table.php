@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('attribute_father_product', function (Blueprint $table) {
             $table->foreignId('attribute_id')->constrained('attributes'); 
             $table->foreignId('father_product_id')->constrained('father_products'); 
-            $table->string('value'); 
+            $table->string('value')->nullable();
             $table->primary(['attribute_id', 'father_product_id']);
         });
     }
