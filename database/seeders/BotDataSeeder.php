@@ -94,17 +94,24 @@ class BotDataSeeder extends Seeder
                     $width  = 0;
                     $height = 0;
                     $length = 0;
-                    
                     $midesNetes = str_replace('MM', '', strtoupper($fill['mesures']));
-                    $dimensions = explode('X', $midesNetes);
-                    if (count($dimensions) >= 2) {
-                        $width  = (int) trim($dimensions[0]);
-                        $height = (int) trim($dimensions[1]);
-                    }                        
-                    if (count($dimensions) === 3) {
-                        $length = (int) trim($dimensions[2]);
-                    } elseif (count($dimensions) === 2) {
+                    
+                    if (str_contains($midesNetes, 'Ø')) {
+                        $diameNet = str_replace(['Ø', ' '], '', $midesNetes);
+                        $width  = (int) trim($diameNet); // Si l'alçada és 0, l'amplada és el diàmetre
+                        $height = 0;
                         $length = (int) ($item['caracteristiques']['Longitud (mm)'] ?? 0);
+                    } else {
+                        $dimensions = explode('X', $midesNetes);
+                        if (count($dimensions) >= 2) {
+                            $width  = (int) trim($dimensions[0]);
+                            $height = (int) trim($dimensions[1]);
+                        }                        
+                        if (count($dimensions) === 3) {
+                            $length = (int) trim($dimensions[2]);
+                        } elseif (count($dimensions) === 2) {
+                            $length = (int) ($item['caracteristiques']['Longitud (mm)'] ?? 0);
+                        }
                     }
                     // 3. preu i unitats
                     $currentUnitPrice = 0.0;
