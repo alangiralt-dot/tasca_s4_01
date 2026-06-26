@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id(); 
             $table->foreignId('customer_id')->constrained('customers'); 
-            $table->string('code'); 
+            $table->string('code')->unique();
             $table->foreignId('status_id')->constrained('statuses'); 
             $table->dateTime('date'); 
         });
