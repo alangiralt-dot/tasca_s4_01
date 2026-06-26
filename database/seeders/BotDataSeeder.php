@@ -30,7 +30,10 @@ class BotDataSeeder extends Seeder
 
         // 2. Processar la informació en brut de cada producte pare i dels seus fills
         foreach ($products as $item) {
-            
+            $existeixPare = \App\Models\FatherProduct::where('name', $item['producte_pare'])->exists();
+            if ($existeixPare) {
+                continue;
+            }            
             // Pas A: Construcció de l'arbre de categories
             $parentId = null;
 
