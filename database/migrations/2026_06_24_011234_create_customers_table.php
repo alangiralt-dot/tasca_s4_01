@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('phone');
             $table->string('street');
             $table->string('address_number');
-            $table->string('address_floor');
-            $table->string('door');
+            $table->string('address_floor')->nullable();
+            $table->string('door')->nullable();
             $table->foreignId('city_id')->constrained('cities');
             $table->string('postal_code');
             $table->foreignId('user_id')->unique()->constrained('users');
