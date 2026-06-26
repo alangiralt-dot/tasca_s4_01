@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
-            $table->string('availability');
+            $table->string('availability')->unique();
         });
     }
 
