@@ -124,8 +124,9 @@ class BotDataSeeder extends Seeder
 
                     $preuBrut = trim(str_replace("\xC2\xA0", ' ', $fill['preu'])); // "\xC2\xA0" és &nbsp;
 
-                    if (preg_match('/([0-9]+,[0-9]+)(.+)/', $preuBrut, $matches)) {
-                        $currentUnitPrice = (float) str_replace(',', '.', $matches[1]);
+                    if (preg_match('/([0-9.]+,[0-9]+)(.+)/', $preuBrut, $matches)) {
+                        $currentUnitPrice = str_replace('.', '', $matches[1]);
+                        $currentUnitPrice = (float) str_replace(',', '.', $currentUnitPrice);
                         $units = trim($matches[2]); 
                     }
                     // 3.5. Alimentació automàtica i dinàmica de la nova taula diccionari 11
