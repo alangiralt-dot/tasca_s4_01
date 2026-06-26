@@ -19,11 +19,11 @@ return new class extends Migration
             $table->integer('length'); 
             $table->decimal('cost_unit_price', 8, 4);
             $table->decimal('current_unit_price', 8, 4);
-            $table->string('units'); 
             $table->integer('pack'); 
             $table->integer('stock'); 
             $table->foreignId('father_product_id')->constrained('father_products'); 
             $table->foreignId('availability_id')->constrained('availabilities'); 
+            $table->foreignId('unit_id')->constrained('units'); 
         });
     }
 
