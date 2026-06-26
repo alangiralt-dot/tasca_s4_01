@@ -14,7 +14,7 @@ public function up(): void
         Schema::create('child_product_order', function (Blueprint $table) {
             $table->foreignId('order_id')->constrained('orders'); 
             $table->foreignId('child_product_id')->constrained('child_products'); 
-            $table->integer('discount'); 
+            $table->integer('discount')->default(0);
             $table->integer('quantity'); 
             $table->decimal('sale_unit_price', 9, 4); 
             
