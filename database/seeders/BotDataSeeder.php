@@ -123,6 +123,10 @@ class BotDataSeeder extends Seeder
                         $currentUnitPrice = (float) str_replace(',', '.', $matches[1]);
                         $units = trim($matches[2]); 
                     }
+                    // 3.5. Alimentació automàtica i dinàmica de la nova taula diccionari 11
+                    $unitModel = \App\Models\Unit::firstOrCreate([
+                        'unit' => $units
+                    ]);
                     // 4. inventar el preu de cost
                     $costUnitPrice = $currentUnitPrice / 2.1;
                     // 5. omplir els camps de ChildProduct
@@ -136,11 +140,11 @@ class BotDataSeeder extends Seeder
                             'length'             => $length,
                             'cost_unit_price'    => $costUnitPrice,
                             'current_unit_price' => $currentUnitPrice,
-                            'units'              => $units,
                             'pack'               => (int) ($fill['pack'] ?? 1),
                             'stock'              => 0,
                             'father_product_id'  => $fatherProduct->id,
                             'availability_id'    => $availability->id,
+                            'unit_id'            => $unitModel->id // Transmetem l'ID trobat o creat
                         ]
                     );
                 }
