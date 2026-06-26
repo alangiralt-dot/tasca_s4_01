@@ -14,6 +14,7 @@ class BotDataSeeder extends Seeder
      */
     public function run(): void
     {
+        // php artisan migrate:fresh && php artisan db:seed --class=BotDataSeeder
         // 1. Generar un array a partir del fitxer .json
         $jsonPath = database_path('data/fustes_en_brut.json');
         
@@ -89,28 +90,32 @@ class BotDataSeeder extends Seeder
                     $availability = \App\Models\Availability::firstOrCreate([
                         'availability' => $fill['disponibilitat'] ?? 'Consultar'
                     ]);
-
                     // 2. mesures
-                    $width  = 0;
-                    $height = 0;
-                    $length = 0;
-                    $midesNetes = str_replace('MM', '', strtoupper($fill['mesures']));
-                    
-                    if (str_contains($midesNetes, 'Ø')) {
-                        $diameNet = str_replace(['Ø', ' '], '', $midesNetes);
-                        $width  = (int) trim($diameNet); // Si l'alçada és 0, l'amplada és el diàmetre
-                        $height = 0;
+
+                    $mesuresNetes = trim($fill['mesures']);
+
+                    if (preg_match('/Ø([0-9]+)X([0-9]+)/i', $mesuresNetes, $matches)) {
+                        $width = (int) $matches[1];
+                        $height = -1;
+                        $length = (int) $matches[2];
+                    } elseif (preg_match('/Ø([0-9]+)/i', $mesuresNetes, $matches)) {
+                        $width = (int) $matches[1];
+                        $height = -1;
                         $length = (int) ($item['caracteristiques']['Longitud (mm)'] ?? 0);
                     } else {
-                        $dimensions = explode('X', $midesNetes);
-                        if (count($dimensions) >= 2) {
-                            $width  = (int) trim($dimensions[0]);
-                            $height = (int) trim($dimensions[1]);
-                        }                        
-                        if (count($dimensions) === 3) {
-                            $length = (int) trim($dimensions[2]);
-                        } elseif (count($dimensions) === 2) {
-                            $length = (int) ($item['caracteristiques']['Longitud (mm)'] ?? 0);
+                        $mides = explode('X', str_replace('MM', '', strtoupper($mesuresNetes)));
+                        if (count($mides) === 3) {
+                            $width  = (int) $mides[0];
+                            $height = (int) $mides[1];
+                            $length = (int) $mides[2];
+                        } elseif (count($mides) === 2) {
+                            $width  = (int) $mides[0];
+                            $height = (int) $mides[1];
+                            $length = 2500; 
+                        } else {
+                            $width = 0;
+                            $height = 0;
+                            $length = 0;
                         }
                     }
                     // 3. preu i unitats
@@ -150,5 +155,10 @@ class BotDataSeeder extends Seeder
                 }
             }
         } // foreach ($products as $item) {
+        \App\Models\ChildProduct::where('reference', '91690088')->update([
+            'width'  => 200,
+            'height' => 30,
+            'length' => 900
+        ]);
     } // public function run(): void
 } // class BotDataSeeder extends Seeder
