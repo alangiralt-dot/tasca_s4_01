@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('category');
             $table->foreignId('father_id')->nullable()->constrained('categories');
+            $table->unique(['category', 'father_id']);
         });
     }
 
