@@ -46,18 +46,18 @@
             <div class="space-y-6">
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3">El meu espai</div>
                 <nav class="space-y-1.5">
-                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition">
+                    <a href="{{ url('/fustes-mecanitzades') }}" class="flex items-center space-x-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition">
                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                         <span>Fustes mecanitzades</span>
                     </a>
-                    <a href="#" class="flex items-center space-x-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition">
+                    <a href="{{ url('/comandes') }}" class="flex items-center space-x-3 px-3 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition">
                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         <span>Comandes</span>
                     </a>
                 </nav>
             </div>
             <div class="border-t border-gray-100 pt-5 space-y-1.5">
-                <a href="#" class="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 rounded-xl transition">
+                <a href="{{ url('/el-meu-perfil') }}" class="flex items-center space-x-3 px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-900 rounded-xl transition">
                     <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>El meu perfil</span>
                 </a>
