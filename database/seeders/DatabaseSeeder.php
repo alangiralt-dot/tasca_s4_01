@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Province;
+use App\Models\City;
+use App\Models\Customer;
+use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
@@ -13,33 +16,34 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $provinceId = DB::table('provinces')->insertGetId([
+        $province = Province::create([
             'province' => 'Girona',
         ]);
 
-        $cityId = DB::table('cities')->insertGetId([
+        $city = City::create([
             'city' => 'Salt',
-            'province_id' => $provinceId,
+            'province_id' => $province->id,
         ]);
 
-        $userId = DB::table('users')->insertGetId([
-            'name' => 'carlessaubi',
-            'email' => 'info@fusteriasaubi.com',
-            'password' => Hash::make('saubi17190'),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
-
-        DB::table('customers')->insert([
-            'first_name' => 'Carles',
-            'last_name' => 'Saubí',
-            'phone' => '972230680',
-            'street' => 'Carrer Cardenal Vidal i Barraquer',
+        $customer = Customer::create([
+            'first_name'     => 'Carles',
+            'last_name'      => 'Saubí',
+            'phone'          => '972230680',
+            'street'         => 'Carrer Cardenal Vidal i Barraquer',
             'address_number' => '18',
-            'address_floor' => 'Planta Baixa',
-             'city_id' => $cityId,
-            'postal_code' => '17190',
-            'user_id' => $userId,
+            'address_floor'  => 'Planta Baixa',
+            'door'           => null,
+            'city_id'        => $city->id,
+            'postal_code'    => '17190',
+        ]);
+
+        User::create([
+            'name'        => 'carlessaubi',
+            'email'       => 'info@fusteriasaubi.com',
+            'password'    => Hash::make('saubi17190'),
+            'customer_id' => $customer->id,
+            'created_at'  => now(),
+            'updated_at'  => now(),
         ]);
     }
 }
