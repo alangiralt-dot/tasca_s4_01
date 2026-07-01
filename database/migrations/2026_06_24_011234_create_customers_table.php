@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id();
+            $table->id(); // Això genera un BigInt Unsigned per defecte a Laravel
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone');
@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('door')->nullable();
             $table->foreignId('city_id')->constrained('cities');
             $table->string('postal_code');
-            $table->foreignId('user_id')->unique()->constrained('users');
         });
     }
+
 
     /**
      * Reverse the migrations.
