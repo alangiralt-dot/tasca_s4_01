@@ -1,0 +1,78 @@
+@extends('layouts.app')
+
+@section('tab_name', $category->category)
+
+@section('content')
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="space-y-8">
+        @foreach($groupedProducts as $fatherName => $variants)
+            <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden p-6 space-y-6">
+                <a href="#">
+                <div class="flex items-center gap-5">
+                    <div class="w-[110px] bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
+                        @if($variants->first()->father_image)
+                            <img src="{{ asset('storage/' . $variants->first()->father_image) }}" alt="{{ $fatherName }}" class="w-full h-auto object-contain">
+                        @else
+                            <svg class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        @endif
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-900 uppercase tracking-wider">
+                            {{ $fatherName }}
+                        </h3>
+                        <p class="text-[13px] text-blue-600 bg-white mt-1 font-normal tracking-wider cursor-pointer">
+                            Veure més informació
+                        </p>
+                    </div>
+                </div>
+                </a>
+                <div class="grid grid-cols-12 gap-4 px-2 pb-2 text-sm font-normal text-black uppercase tracking-wider border-b border-[#bed1dc]">
+                    <div class="col-span-2">Referència</div>
+                    <div class="col-span-2">Mesures</div>
+                    <div class="col-span-2">Disponibilitat</div>
+                    <div class="col-span-2 text-right pr-2">Preu</div>
+                    <div class="col-span-2 text-center">Quantitat</div>
+                    <div class="col-span-2 text-center">Acció</div>
+                </div>
+                <div class="divide-y divide-[#bed1dc] !mt-0">
+                    @foreach($variants as $product)
+                        <div class="py-3 grid grid-cols-12 items-center gap-4 hover:bg-gray-50 px-2 transition text-[13px] text-black font-normal">
+                            <div class="col-span-2 text-black font-normal tracking-wide whitespace-nowrap">
+                                {{ $product->reference }}
+                            </div>
+                            <div class="col-span-2 text-black tracking-wide uppercase whitespace-nowrap font-normal">
+                                {{ $product->width }}X{{ $product->height }}X{{ $product->length }}MM 
+                            </div>
+                            <div class="col-span-2 flex items-center gap-2 text-black font-normal">
+                                <span class="truncate">{{ $product->availability_text }}</span>
+                            </div>
+                            <div class="col-span-2 text-right pr-2 font-bold text-black">
+                                <span>
+                                    {{ number_format($product->current_unit_price, 2, ',', '.') }}&nbsp;{{ $product->unit_text }}
+                                </span>
+                            </div>
+                            <div class="col-span-2 flex justify-center">
+                                <div class="flex items-center border border-[#bed1dc] rounded-lg overflow-hidden bg-white shadow-3xs">
+                                    <button type="button" onclick="this.parentNode.querySelector('input').stepDown()" class="px-2 py-1 bg-[#fffacd] text-black hover:bg-[#fff27e] transition border-r border-[#bed1dc] select-none text-[14px]">-</button>
+                                    <input type="number"
+                                           name="quantity[{{ $product->id }}]"
+                                           value="{{ $product->pack }}"
+                                           min="{{ $product->pack }}"
+                                           step="{{ $product->pack }}"
+                                           class="w-10 text-center text-[12px] bg-white text-black font-normal focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                                    <button type="button" onclick="this.parentNode.querySelector('input').stepUp()" class="px-2 py-1 bg-[#fffacd] text-black hover:bg-[#fff27e] transition border-l border-[#bed1dc] select-none text-[14px]">+</button>
+                                </div>
+                            </div>
+                            <div class="col-span-2 flex justify-center">
+                                <button class="bg-[#fffacd] hover:bg-[#fff27e] text-black border border-[#bed1dc] px-4 py-2 rounded-xl tracking-wider transition shadow-3xs flex items-center gap-1 font-normal">
+                                    AFEGIR
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+@endsection
