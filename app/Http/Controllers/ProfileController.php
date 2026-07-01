@@ -3,34 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Customer;
+use App\Models\Province;
+use App\Models\City;
 
 class ProfileController extends Controller
 {
     /**
-     * Mostra el formulari per a modificar el client de proves (U del CRUD).
+     * Mostra el formulari per a modificar el client de proves
      */
     public function edit()
     {
-        /*
-        SELECT cu.*, ci.city, p.province
-        FROM customers AS cu
-        INNER JOIN cities AS ci ON cu.city_id = ci.id
-        INNER JOIN provinces AS p ON ci.province_id = p.id
-        WHERE cu.id = 1
-        LIMIT 1;
-        */
-        $customer = DB::table('customers')
-            ->join('cities', 'customers.city_id', '=', 'cities.id')
-            ->join('provinces', 'cities.province_id', '=', 'provinces.id')
-            ->select('customers.*', 'cities.city as city_name', 'provinces.province as province_name')
-            ->where('customers.id', 1)
-            ->first();
+        $customer = Customer::with('city.province')->findOrFail(1);
 
         return view('profile', compact('customer'));
     }
+
     /**
-     * Processa l'enviament del formulari i actualitza MariaDB (U del CRUD).
+     * Processa les dades del formulari i les actualitza a la base de dades
      */
     public function update(Request $request)
     {
@@ -50,39 +40,15 @@ class ProfileController extends Controller
         $cityNameClean = trim($request->input('city_name'));
         $provinceNameClean = trim($request->input('province_name'));
 
-        $provinceId = DB::table('provinces')->where('province', $provinceNameClean)->value('id');
+        $province = Province::firstOrCreate(['province' => $provinceNameClean]);
 
-        if ($provinceId) {
-            $cityExists = DB::table('cities')
-                ->where('city', $cityNameClean)
-                ->where('province_id', $provinceId)
-                ->exists();
+        $city = City::firstOrCreate([
+            'city'        => $cityNameClean,
+            'province_id' => $province->id
+        ]);
 
-            if (!$cityExists) {
-                DB::table('cities')->insert([
-                    'city' => $cityNameClean,
-                    'province_id' => $provinceId
-                ]);
-            }
-        } else {
-            DB::table('provinces')->insert([
-                'province' => $provinceNameClean
-            ]);
-
-            $provinceId = DB::table('provinces')->where('province', $provinceNameClean)->value('id');
-
-            DB::table('cities')->insert([
-                'city' => $cityNameClean,
-                'province_id' => $provinceId
-            ]);
-        }
-
-        $finalCityId = DB::table('cities')
-            ->where('city', $cityNameClean)
-            ->where('province_id', $provinceId)
-            ->value('id');
-
-        DB::table('customers')->where('id', 1)->update([
+        $customer = Customer::findOrFail(1);
+        $customer->update([
             'first_name'     => $request->input('first_name'),
             'last_name'      => $request->input('last_name'),
             'phone'          => $request->input('phone'),
@@ -91,9 +57,16 @@ class ProfileController extends Controller
             'address_floor'  => $request->input('address_floor'),
             'door'           => $request->input('door'),
             'postal_code'    => $request->input('postal_code'),
-            'city_id'        => $finalCityId,
+            'city_id'        => $city->id, // Assignem la ID del model obtingut
         ]);
-        
+        /*
+        SELECT cu.*, ci.city, p.province
+        FROM customers AS cu
+        INNER JOIN cities AS ci ON cu.city_id = ci.id
+        INNER JOIN provinces AS p ON ci.province_id = p.id
+        WHERE cu.id = 1
+        LIMIT 1;
+        */        
         return redirect('/el-meu-perfil')->with('success', 'Perfil i localització actualitzats correctament!');
     }
 }
