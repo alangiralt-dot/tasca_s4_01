@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Attribute extends Model
 {
     public $timestamps = false;
-
     protected $table = 'attributes';
 
     //attributes ||--{ attribute_father_product }--|| father_products

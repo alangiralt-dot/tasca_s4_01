@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class ChildProduct extends Model
 {
     public $timestamps = false;
-
     protected $table = 'child_products';
 
     //father_products ||--{ child_products

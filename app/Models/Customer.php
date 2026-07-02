@@ -22,8 +22,8 @@ class Customer extends Model
         'address_number', 
         'address_floor', 
         'door', 
-        'postal_code', 
-        'city_id'
+        'city_id',
+        'postal_code'
     ];
 
     // customer ||--|| user

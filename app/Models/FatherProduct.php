@@ -10,8 +10,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class FatherProduct extends Model
 {
     public $timestamps = false;
-
-    // Nom de la taula per si Laravel no el dedueix correctament en plural
     protected $table = 'father_products';
 
     //categories ||--{ father_products
