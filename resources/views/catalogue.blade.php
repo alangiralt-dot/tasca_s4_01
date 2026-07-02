@@ -77,30 +77,60 @@
 </div>
 <script>
     function testAddProduct(productId) {
-        // 1. Localitzem la fila afectada pel clic de la variant
+        // 1. Busquem la fila i l'input de quantitat corresponent del producte fill
         const row = document.getElementById(`row-${productId}`);
-        if (!row) return;
+        /*
+        $_POST = [
+            'quantity' => [
+                135 => "1", // producte fill 135 -> 1 paquet
+                136 => "3", // producte fill 136 -> 3 paquets
+                140 => "12" // producte fill 140 -> 12 paquets
+            ]
+        ];
+        */
+        const quantityInput = document.querySelector(`input[name="quantity[${productId}]"]`);
+        if (!row || !quantityInput) return;
 
-        // 2. Guardem el contingut i les classes originals de la teva graella
-        const originalContent = row.innerHTML;
-        const originalClasses = row.className;
+        const quantity = quantityInput.value;
 
-        // 3. Substituïm temporalment la línia per la franja verda de confirmació
-        row.className = "py-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium shadow-sm flex items-center justify-center transition";
-        row.innerHTML = `
-            <div class="flex items-center gap-2">
-                <svg class="h-5 w-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                <span>El producte s'ha afegit correctament a la comanda actual</span>
-            </div>
-        `;
+        // 2. Injectem el token directament des de Laravel de forma nativa via Blade
+        const csrfToken = "{{ csrf_token() }}";
 
-        // 4. Temporitzador de 5 segons per restaurar el teu disseny original intacte
-        setTimeout(() => {
-            row.className = originalClasses;
-            row.innerHTML = originalContent;
-        }, 5000);
+        // 3. Preparem la petició asíncrona amb XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ url('/orders/add') }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+
+        // 4. Definim què fer quan el servidor ens respongui
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // GUARDEM el disseny original de la teva graella abans de canviar-lo
+                const originalContent = row.innerHTML;
+                const originalClasses = row.className;
+
+                // SUBSTITUÏM la línia per la teva franja verda de confirmació
+                row.className = "py-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium shadow-sm flex items-center justify-center transition";
+                row.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <svg class="h-5 w-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <span>El producte s'ha afegit correctament a la comanda actual</span>
+                    </div>
+                `;
+
+                // TEMPORITZADOR de 4 segons per restaurar el teu disseny original intacte
+                setTimeout(() => {
+                    row.className = originalClasses;
+                    row.innerHTML = originalContent;
+                }, 4000);
+            }
+        };
+
+        // 5. Enviem les dades en segon pla cap a Laravel
+        // La petició viatja pel servidor, Laravel processa la sessió, i quan retorna un codi d'èxit 200, l'objecte detecta el canvi d'estat i és en aquell precís moment de futur quan s'executa la funció de dins de la callback per pintar la teva franja verda
+        xhr.send(`product_id=${productId}&quantity=${quantity}`);
     }
 </script>
 
