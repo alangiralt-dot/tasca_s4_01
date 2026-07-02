@@ -36,7 +36,7 @@
                 </div>
                 <div class="divide-y divide-[#bed1dc] !mt-0">
                     @foreach($variants as $product)
-                        <div class="py-3 grid grid-cols-12 items-center gap-4 hover:bg-gray-50 px-2 transition text-[13px] text-black font-normal">
+                        <div id="row-{{ $product->id }}" class="py-3 grid grid-cols-12 items-center gap-4 hover:bg-gray-50 px-2 transition text-[13px] text-black font-normal">
                             <div class="col-span-2 text-black font-normal tracking-wide whitespace-nowrap">
                                 {{ $product->reference }}
                             </div>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                             <div class="col-span-2 flex justify-center">
-                                <button class="bg-[#fffacd] hover:bg-[#fff27e] text-black border border-[#bed1dc] px-4 py-2 rounded-xl tracking-wider transition shadow-3xs flex items-center gap-1 font-normal">
+                                <button type="button" onclick="testAddProduct({{ $product->id }})" class="bg-[#fffacd] hover:bg-[#fff27e] text-black border border-[#bed1dc] px-4 py-2 rounded-xl tracking-wider transition shadow-3xs flex items-center gap-1 font-normal">
                                     AFEGIR
                                 </button>
                             </div>
@@ -75,4 +75,33 @@
         @endforeach
     </div>
 </div>
+<script>
+    function testAddProduct(productId) {
+        // 1. Localitzem la fila afectada pel clic de la variant
+        const row = document.getElementById(`row-${productId}`);
+        if (!row) return;
+
+        // 2. Guardem el contingut i les classes originals de la teva graella
+        const originalContent = row.innerHTML;
+        const originalClasses = row.className;
+
+        // 3. Substituïm temporalment la línia per la franja verda de confirmació
+        row.className = "py-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium shadow-sm flex items-center justify-center transition";
+        row.innerHTML = `
+            <div class="flex items-center gap-2">
+                <svg class="h-5 w-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>El producte s'ha afegit correctament a la comanda actual</span>
+            </div>
+        `;
+
+        // 4. Temporitzador de 5 segons per restaurar el teu disseny original intacte
+        setTimeout(() => {
+            row.className = originalClasses;
+            row.innerHTML = originalContent;
+        }, 5000);
+    }
+</script>
+
 @endsection
