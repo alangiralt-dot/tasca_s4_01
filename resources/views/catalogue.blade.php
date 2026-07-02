@@ -10,8 +10,8 @@
                 <a href="#">
                 <div class="flex items-center gap-5">
                     <div class="w-[110px] bg-white flex items-center justify-center overflow-hidden flex-shrink-0 shadow-2xs">
-                        @if($variants->first()->father_image)
-                            <img src="{{ asset('storage/' . $variants->first()->father_image) }}" alt="{{ $fatherName }}" class="w-full h-auto object-contain">
+                        @if($variants->first()->fatherProduct?->image_path)
+                            <img src="{{ asset('storage/' . $variants->first()->fatherProduct->image_path) }}" alt="{{ $fatherName }}" class="w-full h-auto object-contain">
                         @else
                             <svg class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                         @endif
@@ -44,11 +44,11 @@
                                 {{ $product->width }}X{{ $product->height }}X{{ $product->length }}MM 
                             </div>
                             <div class="col-span-2 flex items-center gap-2 text-black font-normal">
-                                <span class="truncate">{{ $product->availability_text }}</span>
+                                <span class="truncate">{{ $product->availability?->availability }}</span>
                             </div>
                             <div class="col-span-2 text-right pr-2 font-bold text-black">
                                 <span>
-                                    {{ number_format($product->current_unit_price, 2, ',', '.') }}&nbsp;{{ $product->unit_text }}
+                                    {{ number_format($product->current_unit_price, 2, ',', '.') }}&nbsp;{{ $product->unit?->unit }}
                                 </span>
                             </div>
                             <div class="col-span-2 flex justify-center">
