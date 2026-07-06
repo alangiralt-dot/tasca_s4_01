@@ -41,7 +41,11 @@
                                 {{ $product->reference }}
                             </div>
                             <div class="col-span-2 text-black tracking-wide uppercase whitespace-nowrap font-normal">
-                                {{ $product->width }}X{{ $product->height }}X{{ $product->length }}MM 
+                                @if($product->height === -1)
+                                    Ø{{ $product->width }}X{{ $product->length }}MM
+                                @else
+                                    {{ $product->width }}X{{ $product->height }}X{{ $product->length }}MM
+                                @endif
                             </div>
                             <div class="col-span-2 flex items-center gap-2 text-black font-normal">
                                 <span class="truncate">{{ $product->availability?->availability }}</span>
