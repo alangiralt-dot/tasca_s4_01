@@ -32,11 +32,23 @@
                 <h1 class="font-semibold text-[#0f172a] text-base">@yield('tab_name', 'Dashboard')</h1>
             </div>
             <div class="flex items-center px-2">
-                <button class="w-12 h-5 bg-[#e2e8f0] rounded-full p-0.5 flex items-center justify-start focus:outline-none transition relative shadow-inner">
-                    <div class="bg-[#1e293b] w-4 h-4 rounded-full shadow flex items-center justify-center overflow-hidden border-2 border-[#1e293b]">
-                        <div class="w-2 h-4 bg-white mr-auto"></div>
-                    </div>
-                </button>
+                @yield('confirm_order')
+                <a href="{{ route('orders.showOrderDetails', 'current') }}" 
+                   class="p-1 bg-transparent text-gray-400 hover:text-red-600 transition flex items-center justify-center" 
+                >
+                    <svg class="h-[27px] w-[27px]" xmlns="http://w3.org" xmlns:xlink="http://w3.org" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
+                    <g style="stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 10; fill: currentColor; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                        {{-- Cos i línies estructurals del carret --}}
+                        <path d="M 74.396 66.93 h -47.12 c -3.491 0 -5.549 -2.665 -5.777 -5.299 c -0.178 -2.057 0.741 -4.326 2.792 -5.506 L 16.745 22.34 c -0.132 -0.592 0.012 -1.213 0.392 -1.687 c 0.379 -0.474 0.954 -0.75 1.561 -0.75 H 88 c 0.647 0 1.256 0.314 1.631 0.842 c 0.375 0.528 0.471 1.206 0.258 1.817 l -7.983 22.876 c -0.991 2.838 -3.446 4.921 -6.406 5.438 l -48.522 8.48 c -0.006 0.001 -0.012 0.002 -0.019 0.003 c -1.499 0.267 -1.507 1.541 -1.473 1.926 c 0.033 0.386 0.261 1.644 1.792 1.644 h 47.12 c 1.104 0 2 0.896 2 2 S 75.501 66.93 74.396 66.93 z M 21.193 23.904 l 6.966 31.186 l 46.652 -8.152 c 1.533 -0.268 2.805 -1.347 3.318 -2.817 l 7.055 -20.216 H 21.193 z" stroke-linecap="round"/>
+                        {{-- Roda del darrere --}}
+                        <path d="M 27.846 83.111 c -3.615 0 -6.555 -2.94 -6.555 -6.555 c 0 -3.615 2.94 -6.556 6.555 -6.556 s 6.556 2.94 6.556 6.556 C 34.401 80.171 31.46 83.111 27.846 83.111 z M 27.846 74.001 c -1.409 0 -2.555 1.146 -2.555 2.556 c 0 1.408 1.146 2.555 2.555 2.555 c 1.409 0 2.556 -1.146 2.556 -2.555 C 30.401 75.147 29.255 74.001 27.846 74.001 z" stroke-linecap="round"/>
+                        {{-- Roda del davant --}}
+                        <path d="M 68.845 83.111 c -3.615 0 -6.556 -2.94 -6.556 -6.555 c 0 -3.615 2.94 -6.556 6.556 -6.556 s 6.556 2.94 6.556 6.556 C 75.4 80.171 72.46 83.111 68.845 83.111 z M 68.845 74.001 c -1.409 0 -2.556 1.146 -2.556 2.556 c 0 1.408 1.146 2.555 2.556 2.555 s 2.556 -1.146 2.556 -2.555 C 71.4 75.147 70.254 74.001 68.845 74.001 z" stroke-linecap="round"/>
+                        {{-- Mànec superior de guia --}}
+                        <path d="M 18.695 23.904 c -0.916 0 -1.742 -0.633 -1.95 -1.564 l -1.407 -6.301 c -0.677 -3.033 -3.321 -5.151 -6.428 -5.151 H 2 c -1.104 0 -2 -0.896 -2 -2 s 0.896 -2 2 -2 h 6.909 c 4.995 0 9.244 3.404 10.333 8.279 l 1.407 6.301 c 0.241 1.078 -0.438 2.147 -1.516 2.388 C 18.986 23.889 18.839 23.904 18.695 23.904 z" stroke-linecap="round"/>
+                    </g>
+                    </svg>
+                </a>
             </div>
         </div>
 
