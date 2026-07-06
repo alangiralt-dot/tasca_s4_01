@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
-@section('tab_name', 'Detall de la comanda')
+@section('confirm_order')
+    @if($isCurrent && !$products->isEmpty())
+        <form action="{{ route('orders.confirm') }}" method="POST" class="px-2 border-[#bed1dc]">
+            @csrf
+            <button type="submit" class="border border-[#bed1dc] w-full bg-[#fffacd] text-black hover:bg-[#fff27e] font-medium py-2 px-4 rounded-xl shadow-sm transition active:scale-[0.98] text-center cursor-pointer uppercase tracking-wider text-xs">
+                Confirmar Comanda
+            </button>
+        </form>
+    @endif
+@endsection
+
+@section('tab_name', $isCurrent ? 'Comanda en curs' : 'Detall de la comanda')
 
 @section('content')
 <div class="space-y-6">
@@ -40,7 +51,21 @@
                         <div class="col-span-6 uppercase text-black font-normal break-words">
                             {{ $product->fatherProduct->name ?? 'Material Industrial' }}
                         </div>
+                        
+                        <div class="col-span-6 text-right font-normal flex justify-end">
+                            @if($isCurrent)
+                                <button type="button" 
+                                        onclick="removeInvoiceItem({{ $product->id }})" 
+                                        class="p-1 text-gray-400 hover:text-red-600 rounded-md hover:bg-red-50 transition cursor-pointer" 
+                                        title="Eliminar llistó">
+                                    <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                    </svg>
+                                </button>
+                            @endif
+                        </div>
                     </div>
+
 
                     <div class="grid grid-cols-12 gap-4 items-center">
                         
@@ -57,15 +82,26 @@
                         </div>
                         <div class="col-span-2 text-right font-normal"></div>
                         <div class="col-span-2 text-center font-normal flex justify-center">
+                            @if($isCurrent)
+                                <div class="flex items-center border border-[#bed1dc] rounded-lg overflow-hidden bg-white shadow-3xs">
+                                    <button type="button" onclick="updateInvoiceSession({{ $product->id }}, -{{ $product->pack ?? 1 }}, this.parentNode.querySelector('input').value)" class="px-2 py-1 bg-[#fffacd] text-black hover:bg-[#fff27e] transition border-r border-[#bed1dc] select-none text-[14px]">-</button>
+                                   
+                                    <input type="number" name="quantity[{{ $product->id }}]" value="{{ $quantities[$product->id]['quantity'] }}" min="{{ $product->pack ?? 1 }}" step="{{ $product->pack ?? 1 }}" class="w-10 text-center text-[12px] bg-white text-black font-normal focus:outline-none [appearance:textfield] [&amp;::-webkit-outer-spin-button]:appearance-none [&amp;::-webkit-inner-spin-button]:appearance-none">
+                                    
+                                    <button type="button" onclick="updateInvoiceSession({{ $product->id }}, {{ $product->pack ?? 1 }}, this.parentNode.querySelector('input').value)" class="px-2 py-1 bg-[#fffacd] text-black hover:bg-[#fff27e] transition border-l border-[#bed1dc] select-none text-[14px]">+</button>
+                                </div>
+                            @else
                                 {{ $product->pivot->quantity }}
+                            @endif
                         </div>
 
+
                         <div class="col-span-2 tracking-wide whitespace-nowrap">
-                            {{ number_format($product->pivot->sale_unit_price, 2, ',', '.') }} {{ $product->unit->unit }}
+                            {{ number_format($isCurrent ? $product->current_unit_price : $product->pivot->sale_unit_price, 2, ',', '.') }} {{ $product->unit->unit }}
                         </div>
 
                         <div class="col-span-2 text-right font-bold text-black tracking-wide">
-                            {{ number_format($product->pivot->subtotal, 2, ',', '.') }} €
+                            {{ number_format($isCurrent ? $quantities[$product->id]['subtotal'] : $product->pivot->subtotal, 2, ',', '.') }} €
                         </div>
 
                     </div>
@@ -84,6 +120,7 @@
 
         <div class="grid grid-cols-12 gap-4">
             <div class="col-span-4 space-y-2 text-[13px] font-normal">
+                {{-- Tres files de traçabilitat inferiors alineades amb el bloc comptable --}}
                 <div class="flex justify-between text-black">
                     <span class="uppercase">Codi</span>
                     <span class="font-normal text-black tracking-wide">{{ $code }}</span>
@@ -116,4 +153,50 @@
 
     </div>
 </div>
+<script>
+    function updateInvoiceSession(productId, step, currentValue) {
+        const currentVal = parseInt(currentValue) || 0;
+        
+        // Protecció local: Si l'usuari intenta restar i ja som al mínim (el pack), bloquegem la petició asíncrona
+        if (step < 0 && currentVal <= Math.abs(step)) {
+            return; 
+        }
+
+        // 1. Injectem el token CSRF de validació de Laravel
+        const csrfToken = "{{ csrf_token() }}";
+
+        // 2. Preparem la petició POST cap a la teva ruta oficial d'afegir
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ route('orders.add') }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+
+        // 3. Un cop la sessió s'ha modificat amb èxit pel controlador, recarreguem la URL
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                window.location.href = "{{ url('/comandes/current') }}";
+            }
+        };
+
+        // 4. ENVIEM EL STEP DIRECTAMENT: Laravel farà el `+= $step` exacte a la sessió
+        xhr.send(`product_id=${productId}&quantity=${step}`);
+    }
+    function removeInvoiceItem(productId) {
+        const csrfToken = "{{ csrf_token() }}";
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', "{{ route('orders.remove') }}", true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // Quan la sessió s'ha buidat, cridem immediatament la URL comandes/current
+                window.location.href = "{{ url('/comandes/current') }}";
+            }
+        };
+
+        xhr.send(`product_id=${productId}`);
+    }
+</script>
 @endsection
