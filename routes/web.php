@@ -12,10 +12,13 @@ Route::get('/', function () {
 Route::get('/test-layout', function () {
     return view('test');
 });
-// GET
-Route::get('/el-meu-perfil', [ProfileController::class, 'edit']);
-// POST
-Route::post('/el-meu-perfil', [ProfileController::class, 'update']);
-Route::post('/orders/add', [OrderController::class, 'addToCurrentOrder'])->name('orders.add');
+
+
+Route::get('/el-meu-perfil', [ProfileController::class, 'edit']); // GET
+Route::post('/el-meu-perfil', [ProfileController::class, 'update']); // POST
+
+Route::get('/comandes', [OrderController::class, 'showOrders'])->name('orders.showOrders');
+Route::get('/comandes/{id}', [OrderController::class, 'showOrderDetails'])->name('orders.showOrderDetails');
+
 // Les rutes fixes han d'anar a dalt i la dinàmica a baix del tot.
 Route::get('/{slug}', [CatalogueController::class, 'showChildProducts']);

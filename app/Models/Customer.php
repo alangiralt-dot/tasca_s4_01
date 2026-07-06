@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Customer extends Model
 {
     public $timestamps = false;
-
     protected $table = 'customers';
     
     // Els atributs que es poden modificar des del formulari.

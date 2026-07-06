@@ -45,6 +45,6 @@ class Order extends Model
     public function childProducts(): BelongsToMany
     {
         return $this->belongsToMany(ChildProduct::class, 'child_product_order', 'order_id', 'child_product_id')
-            ->withPivot('discount', 'quantity', 'sale_unit_price');
+            ->withPivot('discount', 'quantity', 'sale_unit_price', 'subtotal');
     }
 }
