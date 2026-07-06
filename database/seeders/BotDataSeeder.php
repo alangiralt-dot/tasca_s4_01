@@ -161,5 +161,58 @@ class BotDataSeeder extends Seeder
             'height' => 30,
             'length' => 900
         ]);
+        
+        \Illuminate\Support\Facades\DB::table('statuses')->insertOrIgnore(['id' => 1, 'status' => 'Confirmada']);
+        \Illuminate\Support\Facades\DB::table('statuses')->insertOrIgnore(['id' => 2, 'status' => 'En preparació']);
+        \Illuminate\Support\Facades\DB::table('statuses')->insertOrIgnore(['id' => 3, 'status' => 'Lliurada']);
+        
+        \App\Models\Availability::where('availability', '24/48h')->update(['delay_weight' => 10]);
+        \App\Models\Availability::where('availability', '3/5 dies')->update(['delay_weight' => 20]);
+        \App\Models\Availability::where('availability', 'Consultar')->update(['delay_weight' => 30]);
+                        
+        $customer = \App\Models\Customer::where('first_name', 'Carles')->first();
+
+       if ($customer) {
+            
+            $order1 = \App\Models\Order::create([
+                'customer_id'        => $customer->id,
+                'status_id'          => 3,
+                'date'               => '2026-06-10 10:30:00',
+                'order_availability' => '24/48h',
+                'total_amount'       => 228.09,
+            ]);
+
+            \Illuminate\Support\Facades\DB::table('child_product_order')->insert([
+                ['order_id' => $order1->id, 'child_product_id' => 1, 'discount' => 0, 'quantity' => 100, 'sale_unit_price' => 1.1600, 'subtotal' => 116.00],
+                ['order_id' => $order1->id, 'child_product_id' => 163, 'discount' => 0, 'quantity' => 5, 'sale_unit_price' => 14.5000, 'subtotal' => 72.50],
+            ]);
+
+            $order2 = \App\Models\Order::create([
+                'customer_id'        => $customer->id,
+                'status_id'          => 2,
+                'date'               => '2026-06-28 15:45:00',
+                'order_availability' => '3/5 dies',
+                'total_amount'       => 483.12,
+            ]);
+
+            \Illuminate\Support\Facades\DB::table('child_product_order')->insert([
+                ['order_id' => $order2->id, 'child_product_id' => 141, 'discount' => 0, 'quantity' => 3, 'sale_unit_price' => 34.1300, 'subtotal' => 102.39],
+                ['order_id' => $order2->id, 'child_product_id' => 152, 'discount' => 0, 'quantity' => 5, 'sale_unit_price' => 23.7500, 'subtotal' => 296.88],
+            ]);
+
+            $order3 = \App\Models\Order::create([
+                'customer_id'        => $customer->id,
+                'status_id'          => 1,
+                'date'               => '2026-07-03 11:15:00',
+                'order_availability' => 'Consultar',
+                'total_amount'       => 589.10,
+            ]);
+
+            \Illuminate\Support\Facades\DB::table('child_product_order')->insert([
+                ['order_id' => $order3->id, 'child_product_id' => 129, 'discount' => 0, 'quantity' => 2, 'sale_unit_price' => 1750.0000, 'subtotal' => 340.20],
+                ['order_id' => $order3->id, 'child_product_id' => 159, 'discount' => 0, 'quantity' => 10, 'sale_unit_price' => 81.4800, 'subtotal' => 146.66],
+            ]);
+        }
+
     } // public function run(): void
 } // class BotDataSeeder extends Seeder

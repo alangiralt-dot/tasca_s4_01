@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->foreignId('status_id')->constrained('statuses'); 
             $table->dateTime('date'); 
+            $table->string('order_availability');
+            $table->decimal('total_amount', 8, 2);
         });
     }
-
 
     /**
      * Reverse the migrations.

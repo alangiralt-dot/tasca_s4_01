@@ -17,6 +17,7 @@ public function up(): void
             $table->integer('discount')->default(0);
             $table->integer('quantity'); 
             $table->decimal('sale_unit_price', 9, 4); 
+            $table->decimal('subtotal', 6, 2);
             
             $table->primary(['order_id', 'child_product_id']);
         });

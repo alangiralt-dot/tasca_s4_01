@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('availabilities', function (Blueprint $table) {
             $table->id();
             $table->string('availability')->unique();
+            $table->integer('delay_weight')->default(0);
         });
     }
 
