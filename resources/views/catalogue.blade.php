@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="col-span-2 flex justify-center">
-                                <button type="button" onclick="testAddProduct({{ $product->id }})" class="bg-[#fffacd] hover:bg-[#fff27e] text-black border border-[#bed1dc] px-4 py-2 rounded-xl tracking-wider transition shadow-3xs flex items-center gap-1 font-normal">
+                                <button type="button" onclick="testAddProduct({{ $product->id }})" class="bg-[#fffacd] hover:bg-[#fff27e] border border-[#bed1dc] px-4 py-2 rounded-xl text-xs text-black font-medium tracking-wider uppercase shadow-sm transition">
                                     AFEGIR
                                 </button>
                             </div>
