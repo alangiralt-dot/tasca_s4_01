@@ -34,7 +34,7 @@
             <div class="flex items-center px-2">
                 @yield('confirm_order')
                 <a href="{{ route('orders.showOrderDetails', 'current') }}" 
-                   class="p-1 bg-transparent text-gray-400 hover:text-red-600 transition flex items-center justify-center" 
+                   class="p-1 bg-transparent text-gray-400 hover:text-red-600 transition" 
                 >
                     <svg class="h-[27px] w-[27px]" xmlns="http://w3.org" xmlns:xlink="http://w3.org" version="1.1" viewBox="0 0 256 256" xml:space="preserve">
                     <g style="stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 10; fill: currentColor; fill-rule: nonzero; opacity: 1;" transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
@@ -66,17 +66,14 @@
                         <svg class="h-3 w-3 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                     </button>
 
-                    <!-- LEVEL 2: CHILD CATEGORIES (Born hidden via CSS) -->
                     <div id="timber-menu" class="hidden pl-4 space-y-1 mt-1 border-l-2 border-gray-100 ml-5">
                         
-                        <!-- 📁 EXTERIOR TIMBER SUB-ACCORDION (ID 8) -->
                         <div class="space-y-1">
                             <button id="exterior-btn" class="w-full flex items-center justify-between px-3 py-1.5 text-xs font-medium text-gray-700 hover:text-gray-900 transition">
                                 <span>Fusta exterior</span>
                                 <svg class="h-2.5 w-2.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
                             </button>
 
-                            <!-- LEVEL 3: LEAF LINKS (FINAL NODES WITH REAL PLAIN URLS) -->
                             <div id="exterior-menu" class="hidden pl-3 space-y-1 ml-2 border-l border-gray-200">
                                 <a href="{{ url('/bigues-fusta-laminades-autoclau') }}" class="block px-3 py-1 text-xs text-gray-500 hover:text-red-600 transition">
                                     Bigues laminades autoclau
@@ -93,7 +90,6 @@
                             </div>
                         </div>
 
-                        <!-- LEVEL 2 LEAF LINKS (NO CHILDREN -> DIRECT PLAIN URLS) -->
                         <a href="{{ url('/llistons-de-fusta') }}" class="block px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-red-600 transition">
                             Llistons de fusta
                         </a>
