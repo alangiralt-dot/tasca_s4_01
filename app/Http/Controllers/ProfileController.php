@@ -67,6 +67,6 @@ class ProfileController extends Controller
         WHERE cu.id = 1
         LIMIT 1;
         */        
-        return redirect('/el-meu-perfil')->with('success', 'Perfil i localització actualitzats correctament!');
+        return redirect('/el-meu-perfil')->with('success', "El teu perfil s'ha actualitzat correctament");
     }
 }

@@ -6,15 +6,15 @@
 <div class="bg-white rounded-2xl border border-[#e2e8f0] p-8 max-w-2xl mx-auto shadow-sm">
     
     @if(session('success'))
-        <div class="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium shadow-sm">
-            {{ session('success') }}
+        <div id="row-82" class="bg-green-50 border border-green-200 py-4 rounded-xl text-sm text-green-700 font-medium shadow-sm flex justify-center">
+            <div class="flex items-center gap-2">
+                <svg class="h-5 w-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span>{{ session('success') }}</span>
+            </div>
         </div>
     @endif
-
-    <div class="border-b border-gray-100 pb-4 mb-6">
-        <h2 class="text-xl font-bold text-[#0f172a]">Modificar dades del perfil</h2>
-        <p class="text-sm text-gray-500 mt-1">Actualitza la informació comercial de la fusteria per a les comandes.</p>
-    </div>
 
     <form action="{{ url('/el-meu-perfil') }}" method="POST" class="space-y-5">
         @csrf

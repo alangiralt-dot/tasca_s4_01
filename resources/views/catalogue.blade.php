@@ -114,7 +114,7 @@
                 const originalClasses = row.className;
 
                 // SUBSTITUÏM la línia per la teva franja verda de confirmació
-                row.className = "py-4 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm font-medium shadow-sm flex items-center justify-center transition";
+                row.className = "bg-green-50 border border-green-200 py-4 text-sm text-green-700 font-medium shadow-sm flex justify-center";
                 row.innerHTML = `
                     <div class="flex items-center gap-2">
                         <svg class="h-5 w-5 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
