@@ -23,7 +23,7 @@ Route::get('/comandes/current', function (\Illuminate\Http\Request $request) {
 
 // Ruta provisional per evitar que el middleware doni error de ruta no trobada
 Route::get('/login', function () {
-    return "Pantalla de Login provisional d'en SERRA";
+    return view('login');
 })->name('login');
 
 // rutes només accessibles amb una sessió d'usuari
