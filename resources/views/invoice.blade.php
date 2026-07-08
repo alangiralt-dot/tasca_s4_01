@@ -36,7 +36,7 @@
 
     <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden p-6 space-y-4">
         
-        <div class="grid grid-cols-12 gap-4 px-2 pb-2 text-[14px] font-normal text-black uppercase tracking-wider border-b border-[#bed1dc]">
+        <div class="grid grid-cols-12 gap-4 px-2 pb-2 text-[15px] font-semibold text-gray-500 uppercase tracking-wider border-b border-[#bed1dc]">
             <div class="col-span-6">Descripció</div>
             <div class="col-span-2 text-center">Quantitat</div>
             <div class="col-span-2">Preu</div>
@@ -57,7 +57,7 @@
                                 <button type="button" 
                                         onclick="removeInvoiceItem({{ $product->id }})" 
                                         class="p-1 bg-transparent text-gray-400 hover:text-red-600 transition" 
-                                        title="Eliminar llistó">
+                                        title="Eliminar producte">
                                     <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
@@ -122,15 +122,15 @@
             <div class="col-span-4 space-y-2 text-[13px] font-normal">
                 {{-- Tres files de traçabilitat inferiors alineades amb el bloc comptable --}}
                 <div class="flex justify-between text-black">
-                    <span class="uppercase">Codi</span>
+                    <span class="font-semibold text-gray-500 uppercase tracking-wider">Codi</span>
                     <span class="font-normal text-black tracking-wide">{{ $code }}</span>
                 </div>
                 <div class="flex justify-between text-black">
-                    <span class="uppercase">Estat</span>
+                    <span class="font-semibold text-gray-500 uppercase tracking-wider">Estat</span>
                     <span class="font-normal text-black">{{ $status }}</span>
                 </div>
                 <div class="flex justify-between text-black">
-                    <span class="uppercase">Data</span>
+                    <span class="font-semibold text-gray-500 uppercase tracking-wider">Data</span>
                     <span class="font-normal text-black tracking-wide">{{ $date }}</span>
                 </div>
             </div>

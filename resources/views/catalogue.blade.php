@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 </a>
-                <div class="grid grid-cols-12 gap-4 px-2 pb-2 text-sm font-normal text-black uppercase tracking-wider border-b border-[#bed1dc]">
+                <div class="grid grid-cols-12 gap-4 px-2 pb-2 text-[15px] font-semibold text-gray-500 uppercase tracking-wider border-b border-[#bed1dc]">
                     <div class="col-span-2">Referència</div>
                     <div class="col-span-2">Mesures</div>
                     <div class="col-span-2">Disponibilitat</div>
