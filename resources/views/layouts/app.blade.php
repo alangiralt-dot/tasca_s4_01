@@ -32,7 +32,9 @@
                 <h1 class="font-semibold text-[#0f172a] text-base">@yield('tab_name', 'Dashboard')</h1>
             </div>
             <div class="flex items-center px-2">
+                @auth
                 @yield('confirm_order')
+                @endauth
                 <a href="{{ route('orders.showOrderDetails', 'current') }}" 
                    class="p-1 bg-transparent text-gray-400 hover:text-red-600 transition" 
                 >
@@ -56,7 +58,9 @@
     <div class="flex flex-1 overflow-hidden">
         <aside class="w-64 bg-white border-r border-[#e2e8f0] flex flex-col justify-between p-5 shrink-0">
             <div class="space-y-6">
+                @auth
                 <div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-3">El meu espai</div>
+                @endauth
                 <nav class="space-y-1.5">
                     <button id="timber-btn" class="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium rounded-xl transition {{ !request()->is('comandes*') && !request()->is('el-meu-perfil') ? 'text-gray-900 bg-gray-50' : 'text-gray-700 bg-white hover:bg-gray-50' }}">
                         <div class="flex items-center space-x-3">
@@ -114,15 +118,18 @@
                             Fusta vella i envellida
                         </a>
                     </div>
+                    @auth
                     <a href="{{ url('/comandes') }}" class="flex items-center space-x-3 px-3 py-2.5 text-sm rounded-xl transition font-medium {{ request()->is('comandes*') ? 'text-gray-900 bg-gray-50' : 'text-gray-700 bg-white hover:bg-gray-50' }}">
                         <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
                         <span>Comandes</span>
                     </a>
+                    @endauth
                 </nav>
 
 
             </div>
             <div class="border-t border-[#bed1dc] pt-5 space-y-1.5">
+                @auth
                 <a href="{{ url('/el-meu-perfil') }}" class="flex items-center space-x-3 px-3 py-2 text-sm font-medium rounded-xl transition {{ request()->is('el-meu-perfil') ? 'text-gray-900 bg-gray-50' : 'text-gray-700 bg-white hover:bg-gray-50' }}">
                     <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     <span>El meu perfil</span>
@@ -131,6 +138,7 @@
                     <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
                     <span>Logout</span>
                 </a>
+                @endauth
             </div>
         </aside>
         <main class="flex-1 overflow-y-auto p-8 bg-[#f8fafc]">
