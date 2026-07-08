@@ -21,10 +21,10 @@ Route::get('/comandes/current', function (\Illuminate\Http\Request $request) {
     return (new \App\Http\Controllers\OrderController())->showOrderDetails($request, 'current');
 })->name('orders.showOrderDetails.current');
 
-// Ruta provisional per evitar que el middleware doni error de ruta no trobada
 Route::get('/login', function () {
     return view('login');
 })->name('login');
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 
 // rutes només accessibles amb una sessió d'usuari
 Route::middleware(['auth'])->group(function () {
