@@ -27,6 +27,9 @@ Route::get('/login', function () {
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 
 Route::get('/el-meu-perfil', [ProfileController::class, 'edit']); // GET
+
+Route::post('/registrar-se', [ProfileController::class, 'store'])->name('register.store');
+
 // rutes només accessibles amb una sessió d'usuari
 Route::middleware(['auth'])->group(function () {
     Route::post('/el-meu-perfil', [ProfileController::class, 'update']); // POST

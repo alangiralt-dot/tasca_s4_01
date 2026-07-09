@@ -69,8 +69,9 @@ class OrderController extends Controller
      */
     public function showOrders(Request $request)
     {
+        $customerId = \Illuminate\Support\Facades\Auth::user()->customer_id;
         $confirmedOrders = Order::with('status') 
-            ->where('customer_id', 1)
+            ->where('customer_id', $customerId)
             ->orderBy('date', 'desc')
             ->get();
 
@@ -220,7 +221,7 @@ class OrderController extends Controller
         }
 
         $order = new \App\Models\Order();
-        $order->customer_id        = 1;
+        $order->customer_id        = \Illuminate\Support\Facades\Auth::user()->customer_id;;
         $order->status_id          = 1;
         $order->date               = $currentDate ? \Carbon\Carbon::createFromFormat('d/m/Y H:i', $currentDate) : now();
         $order->order_availability = $orderAvailability;

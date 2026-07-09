@@ -6,9 +6,81 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Province;
 use App\Models\City;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProfileController extends Controller
 {
+    /**
+     * Processa el registre públic d'un nou fuster (C de Create).
+     */
+    /**
+     * Processa el registre públic d'un nou fuster (C de Create).
+     */
+    public function store(Request $request)
+    {
+        // 1. VALIDACIÓ DINÀMICA: Reben els textos de la ciutat i província, fidel al teu update
+        $validated = $request->validate([
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
+            'street' => ['required', 'string', 'max:255'],
+            'address_number' => ['required', 'string', 'max:255'],
+            'address_floor' => ['nullable', 'string', 'max:255'],
+            'door' => ['nullable', 'string', 'max:255'],
+            'postal_code' => ['required', 'string', 'max:255'],
+            'city_name' => ['required', 'string', 'max:255'],     // Text del formulari
+            'province_name' => ['required', 'string', 'max:255'], // Text del formulari
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6'],
+        ]);
+
+        // 2. NETEJA I CREACIÓ DINÀMICA (La teva brillant estructura clonada)
+        $cityNameClean = trim($validated['city_name']);
+        $provinceNameClean = trim($validated['province_name']);
+
+        // Busquem o creem la província
+        $province = Province::firstOrCreate(['province' => $provinceNameClean]);
+
+        // Busquem o creem la ciutat lligada a la província
+        $city = City::firstOrCreate([
+            'city' => $cityNameClean,
+            'province_id' => $province->id
+        ]);
+
+        // 3. EXECUTEM LA INSERCIÓ EN BLOC SEGUR
+        $user = DB::transaction(function () use ($validated, $city) {
+            // A. Creem el customer utilitzant la ID que acabem d'obtenir
+            $customer = Customer::create([
+                'first_name' => $validated['first_name'],
+                'last_name' => $validated['last_name'],
+                'phone' => $validated['phone'],
+                'street' => $validated['street'],
+                'address_number' => $validated['address_number'],
+                'address_floor' => $validated['address_floor'] ?? null,
+                'door' => $validated['door'] ?? null,
+                'city_id' => $city->id, // Lligat perfectament
+                'postal_code' => $validated['postal_code'],
+            ]);
+
+            // B. Creem el registre d'usuari
+            return User::create([
+                'name' => null, 
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'customer_id' => $customer->id,
+            ]);
+        });
+
+        // 4. Sessió oberta i cap al carretó a comprar
+        Auth::login($user);
+
+        return redirect()->route('orders.showOrderDetails.current');
+    }
+    
     /**
      * Mostra el formulari per a modificar el client de proves
      */
@@ -63,7 +135,8 @@ class ProfileController extends Controller
             'province_id' => $province->id
         ]);
 
-        $customer = Customer::findOrFail(1);
+        $customerId = \Illuminate\Support\Facades\Auth::user()->customer_id;
+        $customer = Customer::findOrFail($customerId);
         $customer->update([
             'first_name'     => $request->input('first_name'),
             'last_name'      => $request->input('last_name'),
