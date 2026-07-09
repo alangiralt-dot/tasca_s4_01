@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form action="{{ url('/el-meu-perfil') }}" method="POST" class="space-y-5">
+    <form action="{{ $isPublicMode ? url('/registrar-se') : url('/el-meu-perfil') }}" method="POST" class="space-y-5">    
         @csrf
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -77,10 +77,27 @@
                 @error('province_name') <p class="text-red-500 text-xs mt-1">{{ $message }}</p> @enderror
             </div>
         </div>
+        @if($isPublicMode)
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-[#bed1dc] mt-4">
+            <div>
+                <label class="pl-4 block text-[13px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Correu electrònic</label>
+                <input type="email" name="email" required class="w-full px-4 py-2.5 bg-gray-50 border @error('email') border-red-500 @else border-gray-200 @enderror rounded-xl text-sm focus:outline-none focus:border-[#bed1dc] transition">
+            </div>
+
+            <div>
+                <label class="pl-4 block text-[13px] font-semibold text-gray-500 uppercase tracking-wider mb-2">Contrasenya</label>
+                <input type="password" name="password" required class="w-full px-4 py-2.5 bg-gray-50 border @error('password') border-red-500 @else border-gray-200 @enderror rounded-xl text-sm focus:outline-none focus:border-[#bed1dc] transition">
+            </div>
+        </div>
+        @endif
 
         <div class="pt-4 flex justify-end">
             <button type="submit" class="bg-[#fffacd] hover:bg-[#fff27e] border border-[#bed1dc] px-4 py-2 rounded-xl text-xs text-black font-medium tracking-wider uppercase shadow-sm transition">
-                Desar canvis
+                @if($isPublicMode)
+                    Registrar-se
+                @else
+                    Modificar perfil
+                @endif
             </button>
         </div>
     </form>

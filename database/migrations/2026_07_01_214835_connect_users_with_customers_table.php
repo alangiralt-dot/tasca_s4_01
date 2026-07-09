@@ -17,6 +17,7 @@ return new class extends Migration
                   ->unique()
                   ->after('password')
                   ->constrained('customers');
+            $table->string('name')->nullable()->change();
         });
     }
 
@@ -28,6 +29,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['customer_id']);
             $table->dropColumn('customer_id');
+            $table->string('name')->nullable(false)->change();
         });
     }
 };

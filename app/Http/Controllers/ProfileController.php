@@ -14,10 +14,26 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        $customer = Customer::with('city.province')->findOrFail(1);
+        // MODE PRIVAT: Si l'usuari ha iniciat sessió de veritat
+        if (\Illuminate\Support\Facades\Auth::check()) {
+            $customerId = \Illuminate\Support\Facades\Auth::user()->customer_id;
+            $customer = Customer::with('city.province')->findOrFail($customerId);
 
-        return view('profile', compact('customer'));
+            return view('profile', [
+                'customer' => $customer,
+                'isPublicMode' => false // Informem que som a la zona privada (Edició)
+            ]);
+        }
+
+        // MODE PÚBLIC: Si el fuster és un convidat anònim (Alta)
+        $customer = new Customer();
+        
+        return view('profile', [
+            'customer' => $customer,
+            'isPublicMode' => true // Informem que som a la zona pública (Registre)
+        ]);
     }
+
 
     /**
      * Processa les dades del formulari i les actualitza a la base de dades

@@ -26,9 +26,9 @@ Route::get('/login', function () {
 })->name('login');
 Route::post('/login', [App\Http\Controllers\AuthController::class, 'login']);
 
+Route::get('/el-meu-perfil', [ProfileController::class, 'edit']); // GET
 // rutes només accessibles amb una sessió d'usuari
 Route::middleware(['auth'])->group(function () {
-    Route::get('/el-meu-perfil', [ProfileController::class, 'edit']); // GET
     Route::post('/el-meu-perfil', [ProfileController::class, 'update']); // POST
 
     Route::post('/orders/confirm', [OrderController::class, 'confirmOrder'])->name('orders.confirm');
