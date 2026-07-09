@@ -32,4 +32,18 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        // Tanquem la sessió al motor de Laravel
+        Auth::logout();
+
+        // Invalidem la sessió del navegador
+        $request->session()->invalidate();
+
+        // Regenerem el token de seguretat CSRF
+        $request->session()->regenerateToken();
+
+        // Redirigim cap al catàleg general de fustes
+        return redirect()->route('orders.showOrderDetails.current');
+    }
 }

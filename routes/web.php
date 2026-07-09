@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/comandes', [OrderController::class, 'showOrders'])->name('orders.showOrders');
     Route::get('/comandes/{id}', [OrderController::class, 'showOrderDetails'])->name('orders.showOrderDetails');
+    
+    Route::post('/logout', [App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
 });
 
 // Les rutes fixes han d'anar a dalt i la dinàmica a baix del tot.
