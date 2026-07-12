@@ -91,7 +91,12 @@
         </div>
         @endif
 
-        <div class="pt-4 flex justify-end">
+        <div class="pt-4 flex justify-end space-x-3">
+            @if(!$isPublicMode)
+                <button type="button" onclick="event.preventDefault(); document.getElementById('delete-profile-form').submit();" class="bg-[#fffacd] hover:bg-[#fff27e] border border-[#bed1dc] px-4 py-2 rounded-xl text-xs text-black font-medium tracking-wider uppercase shadow-sm transition">
+                    Donar-se de baixa
+                </button>
+            @endif
             <button type="submit" class="bg-[#fffacd] hover:bg-[#fff27e] border border-[#bed1dc] px-4 py-2 rounded-xl text-xs text-black font-medium tracking-wider uppercase shadow-sm transition">
                 @if($isPublicMode)
                     Registrar-se
@@ -101,5 +106,11 @@
             </button>
         </div>
     </form>
+    @if(!$isPublicMode)
+        <form id="delete-profile-form" action="{{ route('profile.destroy') }}" method="POST" class="hidden">
+            @csrf
+            @method('DELETE')
+        </form>
+    @endif
 </div>
 @endsection

@@ -158,4 +158,38 @@ class ProfileController extends Controller
         */        
         return redirect('/el-meu-perfil')->with('success', "El teu perfil s'ha actualitzat correctament");
     }
+        /**
+     * Elimina el compte de l'usuari controlant l'historial fiscal (D de CRUD).
+     */
+    public function destroy(Request $request)
+    {
+        // 1. Capturem les dades de l'usuari connectat
+        $user = \Illuminate\Support\Facades\Auth::user();
+        $customerId = $user->customer_id;
+
+        // 2. EXECUTEM LA DESTRUCCIÓ DETECTANT L'HISTORIAL
+        \Illuminate\Support\Facades\DB::transaction(function () use ($user, $customerId) {
+            
+            // Comprovem si el fuster té comandes a la taula "orders"
+            $hasOrders = \App\Models\Order::where('customer_id', $customerId)->exists();
+
+            // A. L'usuari (les credencials) s'esborra SEMPRE en qualsevol dels dos casos
+            $user->delete();
+
+            // B. El client només es destrueix si NO té cap comanda vinculada
+            if (!$hasOrders) {
+                $customer = \App\Models\Customer::findOrFail($customerId);
+                $customer->delete();
+            }
+            // (Si té comandes, el bloc "if" se salta i el client es queda desat per a Hisenda)
+        });
+
+        // 3. EXPULSIÓ SEGURA I BUIDAT DE MEMÒRIA
+        \Illuminate\Support\Facades\Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // 4. ESTRATÈGIA COMERCIAL: Saltem al carret buit en mode públic
+        return redirect()->route('orders.showOrderDetails.current');
+    }
 }
