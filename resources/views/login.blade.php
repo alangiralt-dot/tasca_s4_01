@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('tab_name', 'Login')
+
 @section('content')
 <div class="bg-white rounded-2xl border border-[#e2e8f0] p-8 max-w-2xl mx-auto shadow-sm">
     <form action="{{ url('/login') }}" method="POST" class="space-y-5">    

@@ -6,7 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CatalogueController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('orders.showOrderDetails.current');
 });
 
 Route::get('/test-layout', function () {
