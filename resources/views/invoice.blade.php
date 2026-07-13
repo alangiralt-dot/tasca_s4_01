@@ -26,9 +26,9 @@
             <div>
                 <h4 class="text-sm font-medium text-red-800">Atenció: Referències no disponibles</h4>
                 <p class="text-xs text-red-700 mt-1 font-normal">
-                    No s'ha pogut processar correctament la tarifa o mida dels següents llistons: 
+                    No s'ha pogut processar correctament la tarifa o mida dels següents productes: 
                     <span class="font-bold">{{ implode(', ', $conflicting_references) }}</span>. 
-                    S'han retirat quirúrgicament de la sessió.
+                    S'han retirat de la comanda en curs.
                 </p>
             </div>
         </div>
@@ -109,7 +109,7 @@
                 </div>
             @empty
                 <div class="py-12 text-center text-gray-400 font-normal">
-                    No hi ha cap llistó de fusta carregat en aquesta comanda.
+                    No hi ha cap producte carregat en aquesta comanda.
                 </div>
             @endforelse
         </div>
