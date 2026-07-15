@@ -11,10 +11,10 @@
         * Sets the current timestamp dynamically.
         * Assigns a placeholder code (`-`).
         * Forces the order status strictly to **"En curs"**.
-        * Sets the subtotal, taxes (IVA 21%), and final amount to **0,00 €**.
+        * Sets the taxable base, taxes (IVA 21%), and final amount to **0,00 €**.
     5. The Blade template engine compiles the layout in **Public Mode**.
     6. The application displays the corporate user interface showing the empty state message: *"No hi ha cap producte carregat en aquesta comanda."*
-    7. The sidebar renders camoleonically: keeping *"El meu perfil"* available as a universal shortcut for registration, and displaying the fallback text **"Login"** at the bottom.
+    7. The sidebar renders camoleonically: keeping *"El meu perfil"* as the clicable element for registration in public mode, and displaying the fallback text **"Login"** at the bottom.
 
 *   **Alternative Flows**: None.
 
@@ -30,27 +30,27 @@
     2. The actor selects a specific timber product line (e.g., "Pals rodons de fusta a l'autoclau").
     3. The Laravel routing engine processes the dynamic slug through the CatalogueController.
     4. The system queries MariaDB to retrieve all available dimensions and specific data for that product family.
-    5. The application renders a structured data grid displaying the product image, commercial name, and an itemized table.
+    5. The application renders a structured data grid displaying the father product image and name, and the child product technical specifications.
     6. The actor reviews the precise technical specifications: internal reference, diameter/length measurements, shipping availability (24/48h), and unit price (€/unit).
 
 *   **Alternative Flows**: None.
 
 #### Attached Visual Reference:
-*   [Image: UC-01_browse_product_catalogue.png]: A real screenshot of the Chrome browser displaying the itemized grid for autoclaved round timber poles, showing specific unit prices and the active public sidebar state.
+*   [Image: UC-01_browse_product_catalogue.png]: A real screenshot of the Chrome browser displaying the father and child products grid for autoclaved round timber poles, showing technical specifications and the sidebar in public mode.
 
 ### UC-02: Manage Items in Current Order (Public Mode)
 
 *   **Actor**: Guest Client (Anonymous).
-*   **Goal**: Add product variants to the temporary session cart from the catalogue view without reloading the webpage.
+*   **Goal**: Add child products variants to the temporary session cart from the catalogue view without reloading the webpage.
 *   **Preconditions**: The system has been successfully initialized (UC-00) and the actor is browsing the product grid within a category view.
 *   **Main Success Scenario**:
-    1. The actor adjusts the desired units for a specific product reference using the plus/minus stepper interface.
+    1. The actor adjusts the desired quantity for a specific child product reference using the plus/minus stepper interface.
     2. The actor clicks the yellow "AFEGIR" button on the item row.
     3. The application triggers an asynchronous JavaScript XMLHttpRequest (POST) targeting the /orders/add endpoint.
-    4. The request safely injects the mandatory anti-forgery CSRF token and passes the product_id and quantity variables as parameters.
+    4. The request safely injects the mandatory anti-forgery CSRF token and passes the product_id and quantity as parameters.
     5. The OrderController validates that both inputs are clean integers, fetches the multidimensional "current_order" session array, and updates or initializes the key-value map.
     6. Upon receiving a successful 200 JSON response, the frontend swaps the row styles dynamically, displaying a green success banner reading: "El producte s'ha afegit correctament a la comanda actual".
-    7. A 4-second JavaScript timeout automatically restores the original table row layout, leaving the actor on the catalogue view to continue shopping.
+    7. A 4-second JavaScript timeout automatically restores the original table row layout.
 
 *   **Alternative Flows**: None.
 
@@ -159,10 +159,7 @@
     7. The system flushes the backend memory completely by forgetting the current_order, order_availability, current_amount, and current_date session keys.
     8. The application triggers a secure redirection routing the actor straight to the general historical summary dashboard view (/comandes).
 
-*   **Alternative Flows**:
-    *   **A) Attempting to confirm an empty cart session**:
-        1. If the actor somehow triggers a confirmation post payload while the current session cart array evaluates as empty, the OrderController blocks database generation.
-        2. The system stops processing and safely redirects the actor back to the previous workspace view layout, flashing a validation failure indicator warning: "No pots confirmar una comanda buida."
+*   **Alternative Flows**: None.
 
 #### Attached Visual Reference:
 *   [Image: UC-07-A_confirm_order_trigger.png]: A real screenshot of the current order view under Private Mode parameters showcasing the active product item lines, the rounded financial balance card displays, and the fully unlocked yellow "CONFIRMAR COMANDA" header button.
