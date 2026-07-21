@@ -1,4 +1,4 @@
-## 💻 Setup and Execution Instructions
+## Setup and Execution Instructions
 
 Follow these sequential steps to clone, configure, and run the application locally:
 
@@ -47,10 +47,12 @@ php artisan storage:link
 ### 7. Run Database Migrations and Seeders
 Generate the complete table architecture and populate the database with all default setup data:
 ```bash
-php artisan migrate --seed
+php artisan migrate:fresh --seed && php artisan db:seed --class=BotDataSeeder
 ```
 
 ---
+
+## Use Cases
 
 ### UC-00: System Initialization and Root Access
 
