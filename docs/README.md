@@ -1,3 +1,57 @@
+## 💻 Setup and Execution Instructions
+
+Follow these sequential steps to clone, configure, and run the application locally:
+
+### 1. Clone the Repository and Check Out the Branch
+Open your terminal (Git Bash recommended) and execute:
+```bash
+git clone https://github.com/alangiralt-dot/tasca_s4_01.git && cd tasca_s4_01 && git checkout develop
+```
+
+### 2. Install Project Dependencies
+Generate the local `vendor` folder by downloading all the required backend packages:
+```bash
+composer install
+```
+
+### 3. Initialize the Environment File
+Create your local environment configuration file from the repository template:
+```bash
+cp .env.example .env
+```
+
+### 4. Generate the Application Encryption Key
+Assign the unique security key required by Laravel to run the application:
+```bash
+php artisan key:generate
+```
+
+### 5. Create and Configure the Database
+1. Open your browser, access **phpMyAdmin** (`http://localhost/phpmyadmin`), and create a new empty database named **`serra`**.
+2. Open your freshly created **`.env`** file and verify that the database configuration blocks match your standard environment parameters:
+```ini
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=serra
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 6. Link the Public Storage Folder
+Generate the clean system symbolic link shortcut to map the catalog images into the public folder seamlessly:
+```bash
+php artisan storage:link
+```
+
+### 7. Run Database Migrations and Seeders
+Generate the complete table architecture and populate the database with all default setup data:
+```bash
+php artisan migrate --seed
+```
+
+---
+
 ### UC-00: System Initialization and Root Access
 
 *   **Actor**: Guest Client (Anonymous).
